@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Tạo Tem Giá — Phúc An</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Be Vietnam Pro', Arial, sans-serif; background: #f0f4f8; color: #1a1a1a; min-height: 100vh; }
+
+.header { background: #fff; border-bottom: 1px solid #e0e0e0; padding: 13px 24px; display: flex; align-items: center; gap: 8px; }
+.header h1 { font-size: 15px; font-weight: 700; color: #0a3d5c; }
+.header span { font-size: 12px; color: #aaa; font-weight: 400; margin-left: 6px; }
+
+.app { display: grid; grid-template-columns: 290px 1fr; min-height: calc(100vh - 50px); }
+
+/* ── Sidebar ── */
+.sidebar { background: #fafafa; border-right: 1px solid #e5e5e5; padding: 18px; overflow-y: auto; }
+.slabel { font-size: 10px; font-weight: 700; color: #aaa; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 7px; margin-top: 16px; }
+.slabel:first-of-type { margin-top: 0; }
+input[type=text] { width: 100%; font-size: 13px; padding: 8px 10px; border: 1px solid #ddd; border-radius: 6px; outline: none; background: #fff; }
+input[type=text]:focus { border-color: #1da1f2; }
+.row { display: flex; gap: 6px; }
+.row input { flex: 1; }
+.btn-sm { font-size: 12px; padding: 8px 12px; border-radius: 6px; cursor: pointer; background: #fff; border: 1px solid #ccc; color: #333; white-space: nowrap; }
+.btn-sm:hover { background: #f0f0f0; }
+.hint { font-size: 10.5px; color: #bbb; margin-top: 5px; line-height: 1.6; }
+.hint strong { color: #888; }
+.plist { margin-top: 6px; display: flex; flex-direction: column; gap: 4px; max-height: 220px; overflow-y: auto; }
+.pitem { padding: 8px 10px; background: #fff; border: 1px solid #e5e5e5; border-radius: 6px; cursor: pointer; }
+.pitem:hover { border-color: #1da1f2; }
+.pitem.sel { border-color: #1da1f2; background: #e8f6ff; }
+.pname { font-size: 12px; font-weight: 600; color: #1a1a1a; }
+.pprice { font-size: 11px; color: #999; margin-top: 2px; }
+.pitem.sel .pname { color: #0a3d5c; }
+.btn-export { width: 100%; margin-top: 16px; padding: 11px; font-size: 14px; font-weight: 700; cursor: pointer; background: #1da1f2; color: white; border: none; border-radius: 6px; }
+.btn-export:hover { background: #0a3d5c; }
+.btn-export:disabled { background: #aaa; cursor: not-allowed; }
+.status { font-size: 11px; color: #666; margin-top: 7px; text-align: center; min-height: 16px; }
+
+/* ── Preview ── */
+.preview-area { background: #cdd8e0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32px; overflow: auto; }
+.preview-label { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 14px; }
+
+/* ══════════════════════════════
+   TEMPLATE — 12cm × 8cm
+   96dpi: 453.5 × 302.4px → scale ×1.7 ≈ 771 × 514px
+   ══════════════════════════════ */
+#tag {
+  width: 771px;
+  height: 514px;
+  background: #e7faff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 6px 28px rgba(0,0,0,0.18);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  font-family: 'Be Vietnam Pro', Arial, sans-serif;
+}
+
+/* ── Header row: logo Phúc An + logo hãng ── */
+.t-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 110px;
+  background: #fff;
+  flex-shrink: 0;
+}
+.t-logo-left {
+  display: flex;
+  align-items: center;
+  padding: 14px 22px;
+  gap: 12px;
+  border-right: 1px solid #e0f5fb;
+}
+.logo-upload-area {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+}
+.logo-upload-area img { max-height: 80px; max-width: 230px; object-fit: contain; }
+.logo-ph {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  color: #b0d8e8; font-size: 11px; font-weight: 600; text-align: center;
+  text-transform: uppercase; letter-spacing: 0.05em;
+  border: 2px dashed #c0e8f5; border-radius: 8px; padding: 10px 16px; width: 88%;
+}
+.logo-ph .ico { font-size: 24px; }
+.t-logo-right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 22px;
+}
+.t-logo-right img {
+  max-height: 70px;
+  max-width: 220px;
+  object-fit: contain;
+}
+.brand-text {
+  font-size: 42px;
+  font-weight: 900;
+  color: #0a3d5c;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* ── Body: info left + image right ── */
+.t-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Left info */
+.t-info {
+  padding: 14px 20px;
+  display: flex;
+  flex-direction: column;
+  background: #e7faff;
+}
+.info-top { flex-shrink: 0; }
+.price-area { display: flex; flex-direction: column; gap: 8px; flex: 1; justify-content: flex-end; }
+.info-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #1da1f2;
+  margin-bottom: 3px;
+}
+.info-value {
+  font-size: 20px;
+  font-weight: 800;
+  color: #0a3d5c;
+  line-height: 1.2;
+  margin-bottom: 2px;
+}
+.info-divider {
+  border: none;
+  border-top: 1.5px dashed #a0dff0;
+  margin: 8px 0;
+}
+.price-box {
+  background: #fff;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 8px;
+  flex: 1;
+}
+.price-box:last-child { margin-bottom: 0; }
+.price-box-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #999;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.price-niemyet-val {
+  font-size: 26px;
+  font-weight: 900;
+  color: #1a1a1a;
+}
+.price-ban-val {
+  font-size: 26px;
+  font-weight: 900;
+  color: #e84a1e;
+}
+
+/* Right image */
+.t-image {
+  background: #e7faff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px;
+}
+.t-image-inner {
+  width: 100%;
+  height: 100%;
+  border: 3px solid #1da1f2;
+  border-radius: 10px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.t-image-inner img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+.img-ph {
+  font-size: 12px;
+  color: #b0d8e8;
+  font-weight: 600;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Footer */
+.t-footer {
+  height: 36px;
+  background: #1da1f2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 18px;
+  flex-shrink: 0;
+}
+.t-footer span {
+  font-size: 11px;
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+.t-footer .sep { color: rgba(255,255,255,0.5); font-size: 14px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Tạo Tem Giá Sản Phẩm</h1>
+  <span>Thiết Bị Vệ Sinh Phúc An</span>
+</div>
+
+<div class="app">
+  <div class="sidebar">
+
+    <div class="slabel">1. Google Sheets</div>
+    <div class="row">
+      <input type="text" id="sheet-id" placeholder="Dán Sheet ID vào đây..." />
+      <button class="btn-sm" onclick="loadSheet()">↻ Tải</button>
+    </div>
+    <p class="hint">
+      6 cột theo thứ tự:<br>
+      <strong>Tên SP · Mã SP · Giá niêm yết · Giá bán · Link ảnh SP · Link logo hãng</strong>
+    </p>
+
+    <div class="slabel">2. Chọn sản phẩm</div>
+    <div class="plist" id="plist">
+      <div style="font-size:12px;color:#ccc;padding:6px 0">Chưa có dữ liệu</div>
+    </div>
+
+    <button class="btn-export" id="btn-export" onclick="exportPDF()">⬇ Xuất PDF</button>
+    <div class="status" id="status"></div>
+
+  </div>
+
+  <div class="preview-area">
+    <div class="preview-label">Xem trước — 12 × 8 cm</div>
+
+    <div id="tag">
+      <!-- Header -->
+      <div class="t-header">
+        <div class="t-logo-left" onclick="document.getElementById('logo-input').click()" title="Bấm để upload logo Phúc An">
+          <input type="file" id="logo-input" accept="image/*" style="display:none" onchange="loadLogoPA(event)">
+          <div class="logo-upload-area" id="logo-pa-area">
+            <div class="logo-ph">
+              <span class="ico">🖼</span>
+              Bấm để upload<br>Logo Phúc An
+            </div>
+          </div>
+        </div>
+        <div class="t-logo-right">
+          <div class="brand-text" id="brand-display">—</div>
+        </div>
+      </div>
+
+      <!-- Body -->
+      <div class="t-body">
+        <div class="t-info">
+          <div class="info-top">
+            <div class="info-label">Tên sản phẩm</div>
+            <div class="info-value" id="t-name">—</div>
+            <hr class="info-divider">
+            <div class="info-label">Mã sản phẩm</div>
+            <div class="info-value" id="t-code" style="font-size:17px">—</div>
+            <hr class="info-divider">
+          </div>
+          <div class="price-area">
+            <div class="price-box">
+              <div class="price-box-label">Giá niêm yết</div>
+              <div class="price-niemyet-val" id="t-price-ny">—</div>
+            </div>
+            <div class="price-box">
+              <div class="price-box-label">Giá bán</div>
+              <div class="price-ban-val" id="t-price-ban">—</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="t-image">
+          <div class="t-image-inner" id="img-inner">
+            <div class="img-ph">Hình ảnh<br>sản phẩm</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="t-footer">
+        <span>Thiết Bị Vệ Sinh Phúc An</span>
+        <span class="sep">|</span>
+        <span>Số 19 Lê Bá Tùng - Phường Trường Vinh - Nghệ An</span>
+        <span class="sep">|</span>
+        <span>0961.837.555</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+let products = [], selected = null;
+
+function fmt(v) {
+  if (!v && v !== 0) return '—';
+  const n = typeof v === 'number' ? v : parseFloat(String(v).replace(/[^\d]/g,''));
+  if (isNaN(n)) return String(v);
+  return n.toLocaleString('vi-VN') + ' Đ';
+}
+
+function toDrive(url) {
+  if (!url) return '';
+  const m = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+  if (m) return `https://drive.google.com/uc?export=view&id=${m[1]}`;
+  const m2 = url.match(/id=([a-zA-Z0-9_-]+)/);
+  if (m2) return `https://drive.google.com/uc?export=view&id=${m2[1]}`;
+  return url;
+}
+
+async function loadSheet() {
+  const id = document.getElementById('sheet-id').value.trim();
+  if (!id) { setStatus('Nhập Sheet ID trước'); return; }
+  setStatus('Đang tải...');
+  try {
+    const res = await fetch(`https://docs.google.com/spreadsheets/d/${id}/gviz/tq?tqx=out:json`);
+    const text = await res.text();
+    const json = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]);
+    products = json.table.rows.map(r => ({
+      name:    r.c[0]?.v || '',
+      code:    r.c[1]?.v || '',
+      priceNY: r.c[2]?.v || '',
+      priceB:  r.c[3]?.v || '',
+      imgSP:   r.c[4]?.v || '',
+      imgLogo: r.c[5]?.v || '',
+    })).filter(p => p.name);
+    renderList();
+    setStatus(`Đã tải ${products.length} sản phẩm ✓`);
+  } catch(e) {
+    setStatus('Lỗi: kiểm tra Sheet ID và quyền public');
+  }
+}
+
+function renderList() {
+  const el = document.getElementById('plist');
+  if (!products.length) { el.innerHTML = '<div style="font-size:12px;color:#ccc;padding:6px 0">Không có sản phẩm</div>'; return; }
+  el.innerHTML = products.map((p,i) => `
+    <div class="pitem ${selected===i?'sel':''}" onclick="pick(${i})">
+      <div class="pname">${p.name}</div>
+      <div class="pprice">${fmt(p.priceB)}</div>
+    </div>`).join('');
+}
+
+function pick(i) {
+  selected = i; renderList();
+  const p = products[i];
+  document.getElementById('t-name').textContent   = p.name  || '—';
+  document.getElementById('t-code').textContent   = p.code  || '—';
+  document.getElementById('t-price-ny').textContent = fmt(p.priceNY);
+  document.getElementById('t-price-ban').textContent = fmt(p.priceB);
+
+  // Product image
+  const inner = document.getElementById('img-inner');
+  const src = toDrive(p.imgSP);
+  inner.innerHTML = src
+    ? `<img src="${src}" onerror="this.parentElement.innerHTML='<div class=\\'img-ph\\'>Không tải<br>được ảnh</div>'">`
+    : '<div class="img-ph">Hình ảnh<br>sản phẩm</div>';
+
+  // Brand logo / text
+  const bd = document.getElementById('brand-display');
+  const logoSrc = toDrive(p.imgLogo);
+  if (logoSrc) {
+    bd.innerHTML = '';
+    const img = document.createElement('img');
+    img.src = logoSrc;
+    img.style.cssText = 'max-height:72px;max-width:240px;object-fit:contain;';
+    img.onerror = () => { bd.innerHTML = ''; bd.textContent = p.code?.split(/[\s-]/)[0]?.toUpperCase() || '—'; bd.style.fontSize='42px'; };
+    bd.appendChild(img);
+  } else {
+    bd.textContent = p.code?.split(/[\s-]/)[0]?.toUpperCase() || '—';
+    bd.style.fontSize = '42px';
+  }
+}
+
+async function exportPDF() {
+  if (selected === null) { setStatus('Chưa chọn sản phẩm!'); return; }
+  const btn = document.getElementById('btn-export');
+  btn.disabled = true; setStatus('Đang tạo PDF...');
+  try {
+    const el = document.getElementById('tag');
+    const cvs = await html2canvas(el, { scale: 3, useCORS: true, allowTaint: true });
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({ orientation: 'landscape', unit: 'cm', format: [12, 8] });
+    pdf.addImage(cvs.toDataURL('image/jpeg', 0.97), 'JPEG', 0, 0, 12, 8);
+    const safe = products[selected].name.replace(/[^a-zA-Z0-9]/g,'_').substring(0,30);
+    pdf.save(`tem_gia_${safe}.pdf`);
+    setStatus('Xuất PDF thành công ✓');
+  } catch(e) {
+    setStatus('Lỗi: ' + e.message);
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+function loadLogoPA(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const area = document.getElementById('logo-pa-area');
+    area.innerHTML = `<img src="${ev.target.result}" style="max-height:80px;max-width:230px;object-fit:contain;">`;
+  };
+  reader.readAsDataURL(file);
+}
+
+function setStatus(m) { document.getElementById('status').textContent = m; }
+</script>
+</body>
+</html>
