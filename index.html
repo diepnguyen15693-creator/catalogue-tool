@@ -6,213 +6,399 @@
 <title>Tạo Tem Giá — Phúc An</title>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Be Vietnam Pro', Arial, sans-serif; background: #f0f4f8; color: #1a1a1a; min-height: 100vh; }
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
 
-.header { background: #fff; border-bottom: 1px solid #e0e0e0; padding: 13px 24px; display: flex; align-items: center; gap: 8px; }
-.header h1 { font-size: 15px; font-weight: 700; color: #0a3d5c; }
-.header span { font-size: 12px; color: #aaa; font-weight: 400; margin-left: 6px; }
+    body {
+        font-family: 'Be Vietnam Pro', Arial, sans-serif;
+        background: #f0f4f8;
+        color: #1a1a1a;
+        min-height: 100vh;
+    }
 
-.app { display: grid; grid-template-columns: 290px 1fr; min-height: calc(100vh - 50px); }
+    .header {
+        background: #fff;
+        border-bottom: 1px solid #e0e0e0;
+        padding: 13px 24px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
 
-/* Sidebar */
-.sidebar { background: #fafafa; border-right: 1px solid #e5e5e5; padding: 18px; overflow-y: auto; }
-.slabel { font-size: 10px; font-weight: 700; color: #aaa; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 7px; margin-top: 16px; }
-.slabel:first-of-type { margin-top: 0; }
-input[type=text] { width: 100%; font-size: 13px; padding: 8px 10px; border: 1px solid #ddd; border-radius: 6px; outline: none; background: #fff; }
-input[type=text]:focus { border-color: #1da1f2; }
-.row { display: flex; gap: 6px; }
-.row input { flex: 1; }
-.btn-sm { font-size: 12px; padding: 8px 12px; border-radius: 6px; cursor: pointer; background: #fff; border: 1px solid #ccc; color: #333; white-space: nowrap; }
-.btn-sm:hover { background: #f0f0f0; }
-.hint { font-size: 10.5px; color: #bbb; margin-top: 5px; line-height: 1.6; }
-.hint strong { color: #888; }
-.plist { margin-top: 6px; display: flex; flex-direction: column; gap: 4px; max-height: 220px; overflow-y: auto; }
-.pitem { padding: 8px 10px; background: #fff; border: 1px solid #e5e5e5; border-radius: 6px; cursor: pointer; }
-.pitem:hover { border-color: #1da1f2; }
-.pitem.sel { border-color: #1da1f2; background: #e8f6ff; }
-.pname { font-size: 12px; font-weight: 600; color: #1a1a1a; }
-.pprice { font-size: 11px; color: #999; margin-top: 2px; }
-.pitem.sel .pname { color: #0a3d5c; }
-.btn-export { width: 100%; margin-top: 16px; padding: 11px; font-size: 14px; font-weight: 700; cursor: pointer; background: #1da1f2; color: white; border: none; border-radius: 6px; }
-.btn-export:hover { background: #0a3d5c; }
-.btn-export:disabled { background: #aaa; cursor: not-allowed; }
-.status { font-size: 11px; color: #666; margin-top: 7px; text-align: center; min-height: 16px; }
+    .header h1 {
+        font-size: 15px;
+        font-weight: 700;
+        color: #0a3d5c;
+    }
 
-/* Preview */
-.preview-area { background: #cdd8e0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32px; overflow: auto; }
-.preview-label { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 14px; }
+    .header span {
+        font-size: 12px;
+        color: #aaa;
+        font-weight: 400;
+        margin-left: 6px;
+    }
 
-/* TEMPLATE 12cm x 8cm — rendered at 771x514px */
-#tag {
-  width: 771px;
-  height: 514px;
-  background: #e7faff;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 6px 28px rgba(0,0,0,0.18);
-  display: flex;
-  flex-direction: column;
-  flex-shrink: 0;
-  font-family: 'Be Vietnam Pro', Arial, sans-serif;
-}
+    .app {
+        display: grid;
+        grid-template-columns: 290px 1fr;
+        min-height: calc(100vh - 50px);
+    }
 
-/* Header */
-.t-header {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  height: 112px;
-  background: #fff;
-  flex-shrink: 0;
-}
-.t-logo-left {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 12px 20px;
-  border-right: 1px solid #e0f5fb;
-}
-.t-logo-left img {
-  max-height: 76px;
-  max-width: 240px;
-  object-fit: contain;
-}
-.t-logo-right {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 12px 20px;
-}
-.t-logo-right img {
-  max-height: 76px;
-  max-width: 240px;
-  object-fit: contain;
-}
-.brand-text {
-  font-size: 42px;
-  font-weight: 900;
-  color: #0a3d5c;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-}
+    /* Sidebar */
+    .sidebar {
+        background: #fafafa;
+        border-right: 1px solid #e5e5e5;
+        padding: 18px;
+        overflow-y: auto;
+    }
 
-/* Body */
-.t-body {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  flex: 1;
-  min-height: 0;
-}
+    .slabel {
+        font-size: 10px;
+        font-weight: 700;
+        color: #aaa;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-bottom: 7px;
+        margin-top: 16px;
+    }
 
-/* Left info */
-.t-info {
-  padding: 14px 18px;
-  display: flex;
-  flex-direction: column;
-  background: #e7faff;
-  overflow: hidden;
-}
-.info-label {
-  font-size: 12px;
-  font-weight: 600;
-  color: #1da1f2;
-  margin-bottom: 2px;
-}
-.info-value {
-  font-size: 32px;
-  font-weight: 800;
-  color: #0a3d5c;
-  line-height: 1.2;
-}
-.info-divider {
-  border: none;
-  border-top: 1.5px dashed #a0dff0;
-  margin: 8px 0;
-  flex-shrink: 0;
-}
-.price-area {
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-  flex: 1;
-  justify-content: flex-end;
-}
-.price-box {
-  background: #fff;
-  border-radius: 8px;
-  padding: 10px 14px;
-}
-.price-box-label {
-  font-size: 10px;
-  font-weight: 700;
-  color: #999;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  margin-bottom: 3px;
-}
-.price-niemyet-val {
-  font-size: 36px;
-  font-weight: 900;
-  color: #1a1a1a;
-}
-.price-ban-val {
-  font-size: 36px;
-  font-weight: 900;
-  color: #e84a1e;
-}
+    .slabel:first-of-type {
+        margin-top: 0;
+    }
 
-/* Right image */
-.t-image {
-  background: #e7faff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 12px 12px 12px 8px;
-  overflow: hidden;
-}
-.t-image-inner {
-  width: 100%;
-  height: 100%;
-  border: 3px solid #1da1f2;
-  border-radius: 10px;
-  background: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-.t-image-inner img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-}
-.img-ph {
-  font-size: 12px;
-  color: #b0d8e8;
-  font-weight: 600;
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
+    input[type=text] {
+        width: 100%;
+        font-size: 13px;
+        padding: 8px 10px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        outline: none;
+        background: #fff;
+    }
 
-/* Footer */
-.t-footer {
-  height: 36px;
-  background: #1da1f2;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 18px;
-  flex-shrink: 0;
-}
-.t-footer span {
-  font-size: 11px;
-  color: #fff;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-  white-space: nowrap;
-}
-.t-footer .sep { color: rgba(255,255,255,0.5); }
+    input[type=text]:focus {
+        border-color: #1da1f2;
+    }
+
+    .row {
+        display: flex;
+        gap: 6px;
+    }
+
+    .row input {
+        flex: 1;
+    }
+
+    .btn-sm {
+        font-size: 12px;
+        padding: 8px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        background: #fff;
+        border: 1px solid #ccc;
+        color: #333;
+        white-space: nowrap;
+    }
+
+    .btn-sm:hover {
+        background: #f0f0f0;
+    }
+
+    .hint {
+        font-size: 10.5px;
+        color: #bbb;
+        margin-top: 5px;
+        line-height: 1.6;
+    }
+
+    .hint strong {
+        color: #888;
+    }
+
+    .plist {
+        margin-top: 6px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        max-height: 220px;
+        overflow-y: auto;
+    }
+
+    .pitem {
+        padding: 8px 10px;
+        background: #fff;
+        border: 1px solid #e5e5e5;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    .pitem:hover {
+        border-color: #1da1f2;
+    }
+
+    .pitem.sel {
+        border-color: #1da1f2;
+        background: #e8f6ff;
+    }
+
+    .pname {
+        font-size: 12px;
+        font-weight: 600;
+        color: #1a1a1a;
+    }
+
+    .pprice {
+        font-size: 11px;
+        color: #999;
+        margin-top: 2px;
+    }
+
+    .pitem.sel .pname {
+        color: #0a3d5c;
+    }
+
+    .btn-export {
+        width: 100%;
+        margin-top: 16px;
+        padding: 11px;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        background: #1da1f2;
+        color: white;
+        border: none;
+        border-radius: 6px;
+    }
+
+    .btn-export:hover {
+        background: #0a3d5c;
+    }
+
+    .btn-export:disabled {
+        background: #aaa;
+        cursor: not-allowed;
+    }
+
+    .status {
+        font-size: 11px;
+        color: #666;
+        margin-top: 7px;
+        text-align: center;
+        min-height: 16px;
+    }
+
+    /* Preview */
+    .preview-area {
+        background: #cdd8e0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 32px;
+        overflow: auto;
+    }
+
+    .preview-label {
+        font-size: 10px;
+        color: #888;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-bottom: 14px;
+    }
+
+    /* TEMPLATE 12cm x 8cm — rendered at 771x514px */
+    #tag {
+        width: 771px;
+        height: 514px;
+        background: #e7faff;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 6px 28px rgba(0, 0, 0, 0.18);
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 0;
+        font-family: 'Be Vietnam Pro', Arial, sans-serif;
+    }
+
+    /* Header */
+    .t-header {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        height: 112px;
+        background: #fff;
+        flex-shrink: 0;
+    }
+
+    .t-logo-left {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 20px;
+        border-right: 1px solid #e0f5fb;
+    }
+
+    .t-logo-left img {
+        max-height: 76px;
+        max-width: 240px;
+        object-fit: contain;
+    }
+
+    .t-logo-right {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 20px;
+    }
+
+    .t-logo-right img {
+        max-height: 76px;
+        max-width: 240px;
+        object-fit: contain;
+    }
+
+    .brand-text {
+        font-size: 42px;
+        font-weight: 900;
+        color: #0a3d5c;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+    }
+
+    /* Body */
+    .t-body {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        flex: 1;
+        min-height: 0;
+    }
+
+    /* Left info */
+    .t-info {
+        padding: 14px 18px;
+        display: flex;
+        flex-direction: column;
+        background: #e7faff;
+        overflow: hidden;
+    }
+
+    .info-label {
+        font-size: 17px;
+        font-weight: 600;
+        color: #1da1f2;
+        margin-bottom: 2px;
+    }
+
+    .info-value {
+            font-size: 20px;
+    font-weight: 800;
+    color: #0a3d5c;
+    line-height: 1.2;
+    }
+
+    .info-divider {
+        border: none;
+        border-top: 1.5px dashed #a0dff0;
+        margin: 8px 0;
+        flex-shrink: 0;
+    }
+
+    .price-area {
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+        flex: 1;
+        justify-content: flex-end;
+    }
+
+    .price-box {
+        background: #fff;
+        border-radius: 8px;
+        padding: 10px 14px;
+    }
+
+    .price-box-label {
+           font-size: 15px;
+    font-weight: 700;
+    color: #999;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+    }
+
+    .price-niemyet-val {
+            font-size: 30px;
+    font-weight: 700;
+    color: #1a1a1a;
+    }
+
+    .price-ban-val {
+       font-size: 34px;
+    font-weight: 900;
+    color: #1995e7;
+    }
+
+    /* Right image */
+    .t-image {
+        background: #e7faff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 12px 12px 8px;
+        overflow: hidden;
+    }
+
+    .t-image-inner {
+        width: 100%;
+        height: 100%;
+        border: 3px solid #1da1f2;
+        border-radius: 10px;
+        background: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    .t-image-inner img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+
+    .img-ph {
+        font-size: 12px;
+        color: #b0d8e8;
+        font-weight: 600;
+        text-align: center;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    /* Footer */
+    .t-footer {
+        height: 36px;
+        background: #1da1f2;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 18px;
+        flex-shrink: 0;
+    }
+
+    .t-footer span {
+        font-size: 11px;
+        color: #fff;
+        font-weight: 600;
+        letter-spacing: 0.03em;
+        white-space: nowrap;
+    }
+
+    .t-footer .sep {
+        color: rgba(255, 255, 255, 0.5);
+    }
 </style>
 </head>
 <body>
